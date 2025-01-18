@@ -1,20 +1,28 @@
 package com.br.wallet.controller;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.br.wallet.dto.request.WalletRequestDTO;
+import com.br.wallet.dto.response.WalletResponseDTO;
+import com.br.wallet.service.WalletService;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/wallets")
 public class WalletController {
-    @GetMapping("/hello")
-    public String helloWallet() {
-        return "Hi, I'm here.";
+    private final WalletService walletService;
+
+    public WalletController(WalletService walletService) {
+        this.walletService = walletService;
     }
 
-    @GetMapping("/{name}")
-    public String helloWithName(@PathVariable String name) {
-        return "Hi, I'm " + name;
+    @GetMapping
+    public String helloWallet() {
+        return "Hi, welcome to the page.";
+    }
+
+    @PostMapping
+    public ResponseEntity<WalletResponseDTO> createWallet(@RequestBody WalletRequestDTO walletRequestDTO) {
+        WalletResponseDTO walletResponseDTO = walletService.createWallet(walletRequestDTO);
+        return ResponseEntity.ok(walletResponseDTO);
     }
 }
